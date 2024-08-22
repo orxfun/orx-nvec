@@ -11,9 +11,9 @@ macro_rules! implement {
                 self[i].at(index)
             }
 
-            fn is_index_valid<Idx: IntoIndex<$dim>>(&self, index: Idx) -> bool {
+            fn can_get_at<Idx: IntoIndex<$dim>>(&self, index: Idx) -> bool {
                 let (i, index) = index.split();
-                i < self.len() && self[i].is_index_valid(index)
+                i < self.len() && self[i].can_get_at(index)
             }
         }
 
@@ -24,6 +24,10 @@ macro_rules! implement {
             fn set<Idx: IntoIndex<$dim>>(&mut self, index: Idx, value: T) {
                 let (i, index) = index.split();
                 self[i].set(index, value)
+            }
+
+            fn can_set_at<Idx: IntoIndex<$dim>>(&self, index: Idx) -> bool {
+                self.can_get_at(index)
             }
         }
 
@@ -38,9 +42,9 @@ macro_rules! implement {
                 self[i].at(index)
             }
 
-            fn is_index_valid<Idx: IntoIndex<$dim>>(&self, index: Idx) -> bool {
+            fn can_get_at<Idx: IntoIndex<$dim>>(&self, index: Idx) -> bool {
                 let (i, index) = index.split();
-                i < self.len() && self[i].is_index_valid(index)
+                i < self.len() && self[i].can_get_at(index)
             }
         }
 
@@ -55,9 +59,9 @@ macro_rules! implement {
                 self[i].at(index)
             }
 
-            fn is_index_valid<Idx: IntoIndex<$dim>>(&self, index: Idx) -> bool {
+            fn can_get_at<Idx: IntoIndex<$dim>>(&self, index: Idx) -> bool {
                 let (i, index) = index.split();
-                i < self.len() && self[i].is_index_valid(index)
+                i < self.len() && self[i].can_get_at(index)
             }
         }
 
@@ -68,6 +72,10 @@ macro_rules! implement {
             fn set<Idx: IntoIndex<$dim>>(&mut self, index: Idx, value: T) {
                 let (i, index) = index.split();
                 self[i].set(index, value)
+            }
+
+            fn can_set_at<Idx: IntoIndex<$dim>>(&self, index: Idx) -> bool {
+                self.can_get_at(index)
             }
         }
     };

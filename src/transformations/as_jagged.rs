@@ -42,9 +42,9 @@ where
         self.flat.at(self.to_d1_index(index))
     }
 
-    fn is_index_valid<Idx: IntoIndex<D2>>(&self, index: Idx) -> bool {
+    fn can_get_at<Idx: IntoIndex<D2>>(&self, index: Idx) -> bool {
         let index = self.to_d1_index(index.into_index());
-        self.flat.is_index_valid(index)
+        self.flat.can_get_at(index)
     }
 }
 
@@ -55,6 +55,11 @@ where
 {
     fn set<Idx: IntoIndex<D2>>(&mut self, index: Idx, value: T) {
         self.flat.set(self.to_d1_index(index), value)
+    }
+
+    fn can_set_at<Idx: IntoIndex<D2>>(&self, index: Idx) -> bool {
+        let index = self.to_d1_index(index.into_index());
+        self.flat.can_set_at(index)
     }
 }
 

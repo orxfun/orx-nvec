@@ -13,7 +13,7 @@ where
     }
 
     #[inline]
-    fn is_index_valid<Idx: IntoIndex<N>>(&self, _: Idx) -> bool {
+    fn can_get_at<Idx: IntoIndex<N>>(&self, _: Idx) -> bool {
         true
     }
 }

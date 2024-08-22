@@ -10,11 +10,9 @@ where
         self.get(&i).expect(OUT_OF_BOUNDS).at(index)
     }
 
-    fn is_index_valid<Idx: IntoIndex<D2>>(&self, index: Idx) -> bool {
+    fn can_get_at<Idx: IntoIndex<D2>>(&self, index: Idx) -> bool {
         let (i, index) = index.split();
-        self.get(&i)
-            .map(|v| v.is_index_valid(index))
-            .unwrap_or(false)
+        self.get(&i).map(|v| v.can_get_at(index)).unwrap_or(false)
     }
 }
 
@@ -25,6 +23,11 @@ where
     fn set<Idx: IntoIndex<D2>>(&mut self, index: Idx, value: T) {
         let (i, index) = index.split();
         self.get_mut(&i).expect(OUT_OF_BOUNDS).set(index, value)
+    }
+
+    fn can_set_at<Idx: IntoIndex<D2>>(&self, index: Idx) -> bool {
+        let (i, index) = index.split();
+        self.get(&i).map(|v| v.can_set_at(index)).unwrap_or(false)
     }
 }
 
@@ -45,11 +48,9 @@ where
         self.get(&i).expect(OUT_OF_BOUNDS).at(index)
     }
 
-    fn is_index_valid<Idx: IntoIndex<D2>>(&self, index: Idx) -> bool {
+    fn can_get_at<Idx: IntoIndex<D2>>(&self, index: Idx) -> bool {
         let (i, index) = index.split();
-        self.get(&i)
-            .map(|v| v.is_index_valid(index))
-            .unwrap_or(false)
+        self.get(&i).map(|v| v.can_get_at(index)).unwrap_or(false)
     }
 }
 
@@ -64,11 +65,9 @@ where
         self.get(&i).expect(OUT_OF_BOUNDS).at(index)
     }
 
-    fn is_index_valid<Idx: IntoIndex<D2>>(&self, index: Idx) -> bool {
+    fn can_get_at<Idx: IntoIndex<D2>>(&self, index: Idx) -> bool {
         let (i, index) = index.split();
-        self.get(&i)
-            .map(|v| v.is_index_valid(index))
-            .unwrap_or(false)
+        self.get(&i).map(|v| v.can_get_at(index)).unwrap_or(false)
     }
 }
 
@@ -79,6 +78,11 @@ where
     fn set<Idx: IntoIndex<D2>>(&mut self, index: Idx, value: T) {
         let (i, index) = index.split();
         self.get_mut(&i).expect(OUT_OF_BOUNDS).set(index, value)
+    }
+
+    fn can_set_at<Idx: IntoIndex<D2>>(&self, index: Idx) -> bool {
+        let (i, index) = index.split();
+        self.get(&i).map(|v| v.can_set_at(index)).unwrap_or(false)
     }
 }
 
@@ -101,11 +105,9 @@ macro_rules! implement {
                 self.get(&i).expect(OUT_OF_BOUNDS).at(index)
             }
 
-            fn is_index_valid<Idx: IntoIndex<$dim>>(&self, index: Idx) -> bool {
+            fn can_get_at<Idx: IntoIndex<$dim>>(&self, index: Idx) -> bool {
                 let (i, index) = index.split();
-                self.get(&i)
-                    .map(|v| v.is_index_valid(index))
-                    .unwrap_or(false)
+                self.get(&i).map(|v| v.can_get_at(index)).unwrap_or(false)
             }
         }
 
@@ -116,6 +118,11 @@ macro_rules! implement {
             fn set<Idx: IntoIndex<$dim>>(&mut self, index: Idx, value: T) {
                 let (i, index) = index.split();
                 self.get_mut(&i).expect(OUT_OF_BOUNDS).set(index, value)
+            }
+
+            fn can_set_at<Idx: IntoIndex<$dim>>(&self, index: Idx) -> bool {
+                let (i, index) = index.split();
+                self.get(&i).map(|v| v.can_set_at(index)).unwrap_or(false)
             }
         }
 
@@ -136,11 +143,9 @@ macro_rules! implement {
                 self.get(&i).expect(OUT_OF_BOUNDS).at(index)
             }
 
-            fn is_index_valid<Idx: IntoIndex<$dim>>(&self, index: Idx) -> bool {
+            fn can_get_at<Idx: IntoIndex<$dim>>(&self, index: Idx) -> bool {
                 let (i, index) = index.split();
-                self.get(&i)
-                    .map(|v| v.is_index_valid(index))
-                    .unwrap_or(false)
+                self.get(&i).map(|v| v.can_get_at(index)).unwrap_or(false)
             }
         }
 
@@ -161,11 +166,9 @@ macro_rules! implement {
                 self.get(&i).expect(OUT_OF_BOUNDS).at(index)
             }
 
-            fn is_index_valid<Idx: IntoIndex<$dim>>(&self, index: Idx) -> bool {
+            fn can_get_at<Idx: IntoIndex<$dim>>(&self, index: Idx) -> bool {
                 let (i, index) = index.split();
-                self.get(&i)
-                    .map(|v| v.is_index_valid(index))
-                    .unwrap_or(false)
+                self.get(&i).map(|v| v.can_get_at(index)).unwrap_or(false)
             }
         }
 
@@ -176,6 +179,11 @@ macro_rules! implement {
             fn set<Idx: IntoIndex<$dim>>(&mut self, index: Idx, value: T) {
                 let (i, index) = index.split();
                 self.get_mut(&i).expect(OUT_OF_BOUNDS).set(index, value)
+            }
+
+            fn can_set_at<Idx: IntoIndex<$dim>>(&self, index: Idx) -> bool {
+                let (i, index) = index.split();
+                self.get(&i).map(|v| v.can_set_at(index)).unwrap_or(false)
             }
         }
 

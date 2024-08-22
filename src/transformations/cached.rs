@@ -52,8 +52,8 @@ where
         }
     }
 
-    fn is_index_valid<Idx: IntoIndex<N>>(&self, index: Idx) -> bool {
-        self.inner.is_index_valid(index)
+    fn can_get_at<Idx: IntoIndex<N>>(&self, index: Idx) -> bool {
+        self.inner.can_get_at(index)
     }
 }
 
@@ -74,6 +74,10 @@ where
             // not available, mutate inner
             None => self.inner.set(index, value),
         }
+    }
+
+    fn can_set_at<Idx: IntoIndex<N>>(&self, index: Idx) -> bool {
+        self.inner.can_set_at(index)
     }
 }
 

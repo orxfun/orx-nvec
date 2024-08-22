@@ -1,5 +1,10 @@
-use crate::{Dim, IntoIndex, NVec};
+use crate::{Dim, IntoIndex, NVec, NVecMut};
 use core::marker::PhantomData;
+
+pub enum HookTrigger {
+    OnAt,
+    OnSet,
+}
 
 pub struct Hooked<N, T, V, H>
 where
@@ -8,6 +13,7 @@ where
 {
     inner: V,
     hook: H,
+    hook_trigger: HookTrigger,
     phantom: PhantomData<(N, T)>,
 }
 
@@ -22,12 +28,33 @@ where
     fn at<Idx: IntoIndex<N>>(&self, index: Idx) -> T {
         let idx = index.into_index();
         let value = self.inner.at(index);
-        (self.hook)(idx, &value);
+        if let HookTrigger::OnAt = self.hook_trigger {
+            (self.hook)(idx, &value);
+        }
         value
     }
 
-    fn is_index_valid<Idx: IntoIndex<N>>(&self, index: Idx) -> bool {
-        self.inner.is_index_valid(index)
+    fn can_get_at<Idx: IntoIndex<N>>(&self, index: Idx) -> bool {
+        self.inner.can_get_at(index)
+    }
+}
+
+impl<N, T, V, H> NVecMut<N, T> for Hooked<N, T, V, H>
+where
+    N: Dim,
+    V: NVecMut<N, T>,
+    H: Fn(N::Idx, &T),
+{
+    fn set<Idx: IntoIndex<N>>(&mut self, index: Idx, value: T) {
+        let idx = index.into_index();
+        if let HookTrigger::OnSet = self.hook_trigger {
+            (self.hook)(idx, &value);
+        }
+        self.inner.set(idx, value)
+    }
+
+    fn can_set_at<Idx: IntoIndex<N>>(&self, index: Idx) -> bool {
+        self.inner.can_set_at(index)
     }
 }
 
@@ -39,7 +66,9 @@ where
     Self: NVec<N, T> + Sized,
     H: Fn(N::Idx, &T),
 {
-    fn hooked(self, hook: H) -> Hooked<N, T, Self, H>;
+    fn hooked_on_at(self, hook: H) -> Hooked<N, T, Self, H>;
+
+    fn hooked_on_set(self, hook: H) -> Hooked<N, T, Self, H>;
 }
 
 impl<N, T, V, H> IntoHooked<N, T, H> for V
@@ -48,10 +77,20 @@ where
     V: NVec<N, T>,
     H: Fn(N::Idx, &T),
 {
-    fn hooked(self, hook: H) -> Hooked<N, T, V, H> {
+    fn hooked_on_at(self, hook: H) -> Hooked<N, T, V, H> {
         Hooked {
             inner: self,
             hook,
+            hook_trigger: HookTrigger::OnAt,
+            phantom: Default::default(),
+        }
+    }
+
+    fn hooked_on_set(self, hook: H) -> Hooked<N, T, V, H> {
+        Hooked {
+            inner: self,
+            hook,
+            hook_trigger: HookTrigger::OnSet,
             phantom: Default::default(),
         }
     }
@@ -76,7 +115,7 @@ mod tests {
     #[test]
     fn log_hook() {
         let vec_vec = vec![vec!['1', '2'], vec![], vec!['3', '4', '5', '6']];
-        run(vec_vec.hooked(log));
+        run(vec_vec.hooked_on_at(log));
 
         let map_vec: BTreeMap<usize, Vec<char>> = [
             (0, vec!['1']),
@@ -85,7 +124,7 @@ mod tests {
         ]
         .into_iter()
         .collect();
-        run((&map_vec).hooked(log));
+        run((&map_vec).hooked_on_at(log));
     }
 
     #[test]
@@ -94,7 +133,7 @@ mod tests {
         let hook_increment = |_: [usize; 2], _: &char| *num_called.borrow_mut() += 1;
 
         let vec_vec = vec![vec!['1', '2'], vec![], vec!['3', '4', '5', '6']];
-        run(vec_vec.hooked(log).hooked(hook_increment));
+        run(vec_vec.hooked_on_at(log).hooked_on_at(hook_increment));
 
         assert_eq!(*num_called.borrow(), 3);
     }

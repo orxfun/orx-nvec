@@ -5,7 +5,7 @@ impl<T: Copy> NVec<D1, T> for &[T] {
         self[index.into_index()[0]]
     }
 
-    fn is_index_valid<Idx: IntoIndex<D1>>(&self, index: Idx) -> bool {
+    fn can_get_at<Idx: IntoIndex<D1>>(&self, index: Idx) -> bool {
         index.into_index()[0] < self.len()
     }
 }
@@ -15,7 +15,7 @@ impl<T: Copy> NVec<D1, T> for &mut [T] {
         self[index.into_index()[0]]
     }
 
-    fn is_index_valid<Idx: IntoIndex<D1>>(&self, index: Idx) -> bool {
+    fn can_get_at<Idx: IntoIndex<D1>>(&self, index: Idx) -> bool {
         index.into_index()[0] < self.len()
     }
 }
@@ -26,6 +26,10 @@ where
 {
     fn set<Idx: IntoIndex<D1>>(&mut self, index: Idx, value: T) {
         self[index.into_index()[0]] = value;
+    }
+
+    fn can_set_at<Idx: IntoIndex<D1>>(&self, index: Idx) -> bool {
+        self.can_get_at(index)
     }
 }
 

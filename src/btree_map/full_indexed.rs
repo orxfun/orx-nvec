@@ -12,7 +12,7 @@ where
         *self.get(&index).expect(OUT_OF_BOUNDS)
     }
 
-    fn is_index_valid<Idx: IntoIndex<N>>(&self, index: Idx) -> bool {
+    fn can_get_at<Idx: IntoIndex<N>>(&self, index: Idx) -> bool {
         let index = K::from_index(index.into_index());
         self.contains_key(&index)
     }
@@ -30,6 +30,10 @@ where
             Some(x) => *x = value,
             None => _ = self.insert(index, value),
         }
+    }
+
+    fn can_set_at<Idx: IntoIndex<N>>(&self, _: Idx) -> bool {
+        true
     }
 }
 
@@ -56,7 +60,7 @@ where
         *self.get(&index).expect(OUT_OF_BOUNDS)
     }
 
-    fn is_index_valid<Idx: IntoIndex<N>>(&self, index: Idx) -> bool {
+    fn can_get_at<Idx: IntoIndex<N>>(&self, index: Idx) -> bool {
         let index = K::from_index(index.into_index());
         self.contains_key(&index)
     }
@@ -85,7 +89,7 @@ where
         *self.get(&index).expect(OUT_OF_BOUNDS)
     }
 
-    fn is_index_valid<Idx: IntoIndex<N>>(&self, index: Idx) -> bool {
+    fn can_get_at<Idx: IntoIndex<N>>(&self, index: Idx) -> bool {
         let index = K::from_index(index.into_index());
         self.contains_key(&index)
     }
@@ -103,6 +107,10 @@ where
             Some(x) => *x = value,
             None => _ = self.insert(index, value),
         }
+    }
+
+    fn can_set_at<Idx: IntoIndex<N>>(&self, _: Idx) -> bool {
+        true
     }
 }
 

@@ -33,13 +33,13 @@ where
 {
     #[inline]
     fn at<Idx: IntoIndex<N>>(&self, index: Idx) -> T {
-        match self.inner.is_index_valid(index) {
+        match self.inner.can_get_at(index) {
             true => self.inner.at(index),
             false => self.complete_with,
         }
     }
 
-    fn is_index_valid<Idx: IntoIndex<N>>(&self, _: Idx) -> bool {
+    fn can_get_at<Idx: IntoIndex<N>>(&self, _: Idx) -> bool {
         true
     }
 }
@@ -52,6 +52,10 @@ where
 {
     fn set<Idx: IntoIndex<N>>(&mut self, index: Idx, value: T) {
         self.inner.set(index, value)
+    }
+
+    fn can_set_at<Idx: IntoIndex<N>>(&self, _: Idx) -> bool {
+        true
     }
 }
 
