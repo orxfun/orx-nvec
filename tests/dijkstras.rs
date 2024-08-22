@@ -1,7 +1,6 @@
-use std::collections::{BTreeMap, BTreeSet};
-
 use orx_nvec::*;
 use orx_priority_queue::*;
+use std::collections::{BTreeMap, BTreeSet};
 
 // ALGORITHM IMPLEMENTATION (https://en.wikipedia.org/wiki/2-opt)
 
@@ -21,6 +20,8 @@ where
     OutEdges: IntoIterator<Item = OutEdge>,
     Graph: NVec<D1, OutEdges> + 'a,
 {
+    debug_assert!(graph.can_get_at_all(0..num_nodes));
+
     let mut queue = BinaryHeapOfIndices::with_index_bound(num_nodes);
     let mut visited = vec![false; num_nodes];
 

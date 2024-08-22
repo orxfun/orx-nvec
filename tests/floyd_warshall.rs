@@ -18,6 +18,9 @@ where
     Graph: NVec<D1, OutEdges>,
     Out: NVecMut<D2, E>,
 {
+    let indices = (0..num_vertices).flat_map(|i| (0..num_vertices).map(move |j| [i, j]));
+    debug_assert!(d.can_get_set_at_all(indices));
+
     let inf: E = Bounded::max_value();
 
     for u in 0..num_vertices {

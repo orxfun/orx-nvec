@@ -266,11 +266,9 @@ impl<A: NVec<D2, bool>> GraphColoringNVec<A> {
 
 #[cfg(test)]
 mod tests {
-    use std::collections::HashSet;
-
-    use orx_nvec::{AsMatrix, FunVecBuilder};
-
     use super::*;
+    use orx_nvec::{AsMatrix, FunVecBuilder};
+    use std::collections::HashSet;
 
     macro_rules! test_graph_coloring {
         ($($name:ident: $test_case:expr,)*) => {
