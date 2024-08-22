@@ -9,13 +9,6 @@ impl MatrixLayout for ColumnMajor {
         assert!(ij[0] < self.num_rows, "{}", OUT_OF_BOUNDS);
         self.num_rows * ij[1] + ij[0]
     }
-
-    fn try_d1_index(&self, ij: [usize; 2]) -> Option<usize> {
-        match ij[0] < self.num_rows {
-            true => Some(self.num_rows * ij[1] + ij[0]),
-            false => None,
-        }
-    }
 }
 
 #[cfg(test)]
@@ -65,18 +58,13 @@ mod tests {
         for j in 0..6 {
             for i in 0..2 {
                 assert_eq!(matrix.at([i, j]), expected);
-                assert_eq!(matrix.try_at([i, j]), Some(expected));
 
                 expected += 1;
             }
-            assert_eq!(matrix.try_at([3, j]), None);
         }
-
-        assert_eq!(matrix.try_at([0, 6]), None);
 
         matrix.set([1, 0], 42);
         assert_eq!(matrix.at([1, 0]), 42);
-        assert_eq!(matrix.try_at([1, 0]), Some(42));
         assert_eq!(vec[1], 42);
     }
 }

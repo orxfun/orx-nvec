@@ -9,9 +9,9 @@ where
         self[i].at(index)
     }
 
-    fn try_at<Idx: IntoIndex<D2>>(&self, index: Idx) -> Option<T> {
+    fn is_index_valid<Idx: IntoIndex<D2>>(&self, index: Idx) -> bool {
         let (i, index) = index.split();
-        self.get(i).and_then(|x| x.try_at(index))
+        i < self.len() && self[i].is_index_valid(index)
     }
 }
 
@@ -24,9 +24,9 @@ where
         self[i].at(index)
     }
 
-    fn try_at<Idx: IntoIndex<D2>>(&self, index: Idx) -> Option<T> {
+    fn is_index_valid<Idx: IntoIndex<D2>>(&self, index: Idx) -> bool {
         let (i, index) = index.split();
-        self.get(i).and_then(|x| x.try_at(index))
+        i < self.len() && self[i].is_index_valid(index)
     }
 }
 

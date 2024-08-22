@@ -10,15 +10,6 @@ impl MatrixLayout for UpperTriangular {
         assert!(j < n && i <= j, "{}", OUT_OF_BOUNDS);
         ((2 * n - 1) * i - i * i + 2 * j) / 2
     }
-
-    fn try_d1_index(&self, ij: [usize; 2]) -> Option<usize> {
-        let [i, j] = ij;
-        let n = self.num_rows_and_columns;
-        match j < n && i <= j {
-            true => Some(((2 * n - 1) * i - i * i + 2 * j) / 2),
-            false => None,
-        }
-    }
 }
 
 #[cfg(test)]

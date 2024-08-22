@@ -10,15 +10,6 @@ impl MatrixLayout for Diagonal {
         assert!(i < n && i == j, "{}", OUT_OF_BOUNDS);
         i
     }
-
-    fn try_d1_index(&self, ij: [usize; 2]) -> Option<usize> {
-        let [i, j] = ij;
-        let n = self.num_rows_and_columns;
-        match i < n && i == j {
-            true => Some(i),
-            false => None,
-        }
-    }
 }
 
 #[cfg(test)]

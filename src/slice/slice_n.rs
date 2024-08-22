@@ -11,9 +11,9 @@ macro_rules! implement {
                 self[i].at(index)
             }
 
-            fn try_at<Idx: IntoIndex<$dim>>(&self, index: Idx) -> Option<T> {
+            fn is_index_valid<Idx: IntoIndex<$dim>>(&self, index: Idx) -> bool {
                 let (i, index) = index.split();
-                self.get(i).and_then(|x| x.try_at(index))
+                i < self.len() && self[i].is_index_valid(index)
             }
         }
 
@@ -26,9 +26,9 @@ macro_rules! implement {
                 self[i].at(index)
             }
 
-            fn try_at<Idx: IntoIndex<$dim>>(&self, index: Idx) -> Option<T> {
+            fn is_index_valid<Idx: IntoIndex<$dim>>(&self, index: Idx) -> bool {
                 let (i, index) = index.split();
-                self.get(i).and_then(|x| x.try_at(index))
+                i < self.len() && self[i].is_index_valid(index)
             }
         }
 

@@ -12,9 +12,9 @@ where
         *self.get(&index).expect(OUT_OF_BOUNDS)
     }
 
-    fn try_at<Idx: IntoIndex<N>>(&self, index: Idx) -> Option<T> {
+    fn is_index_valid<Idx: IntoIndex<N>>(&self, index: Idx) -> bool {
         let index = K::from_index(index.into_index());
-        self.get(&index).copied()
+        self.contains_key(&index)
     }
 }
 
@@ -56,9 +56,9 @@ where
         *self.get(&index).expect(OUT_OF_BOUNDS)
     }
 
-    fn try_at<Idx: IntoIndex<N>>(&self, index: Idx) -> Option<T> {
+    fn is_index_valid<Idx: IntoIndex<N>>(&self, index: Idx) -> bool {
         let index = K::from_index(index.into_index());
-        self.get(&index).copied()
+        self.contains_key(&index)
     }
 }
 
@@ -85,9 +85,9 @@ where
         *self.get(&index).expect(OUT_OF_BOUNDS)
     }
 
-    fn try_at<Idx: IntoIndex<N>>(&self, index: Idx) -> Option<T> {
+    fn is_index_valid<Idx: IntoIndex<N>>(&self, index: Idx) -> bool {
         let index = K::from_index(index.into_index());
-        self.get(&index).copied()
+        self.contains_key(&index)
     }
 }
 

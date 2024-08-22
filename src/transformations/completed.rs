@@ -33,12 +33,14 @@ where
 {
     #[inline]
     fn at<Idx: IntoIndex<N>>(&self, index: Idx) -> T {
-        self.inner.try_at(index).unwrap_or(self.complete_with)
+        match self.inner.is_index_valid(index) {
+            true => self.inner.at(index),
+            false => self.complete_with,
+        }
     }
 
-    #[inline]
-    fn try_at<Idx: IntoIndex<N>>(&self, index: Idx) -> Option<T> {
-        Some(self.at(index))
+    fn is_index_valid<Idx: IntoIndex<N>>(&self, _: Idx) -> bool {
+        true
     }
 }
 

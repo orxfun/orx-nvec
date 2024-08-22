@@ -1,13 +1,11 @@
 use super::matrix_layouts::{ColumnMajor, Diagonal, LowerTriangular, RowMajor, UpperTriangular};
-use crate::{failures::OUT_OF_BOUNDS, IntoIndex, NVec, NVecMut, D1, D2};
+use crate::{IntoIndex, NVec, NVecMut, D1, D2};
 use core::marker::PhantomData;
 
 // layout
 
 pub trait MatrixLayout {
     fn to_d1_index(&self, ij: [usize; 2]) -> usize;
-
-    fn try_d1_index(&self, ij: [usize; 2]) -> Option<usize>;
 }
 
 // matrix view
@@ -33,9 +31,9 @@ where
         self.flat.at(index)
     }
 
-    fn try_at<Idx: IntoIndex<D2>>(&self, index: Idx) -> Option<T> {
-        let index = self.layout.try_d1_index(index.into_index())?;
-        self.flat.try_at(index)
+    fn is_index_valid<Idx: IntoIndex<D2>>(&self, index: Idx) -> bool {
+        let index = self.layout.to_d1_index(index.into_index());
+        self.flat.is_index_valid(index)
     }
 }
 
@@ -45,10 +43,7 @@ where
     L: MatrixLayout,
 {
     fn set<Idx: IntoIndex<D2>>(&mut self, index: Idx, value: T) {
-        let index = self
-            .layout
-            .try_d1_index(index.into_index())
-            .expect(OUT_OF_BOUNDS);
+        let index = self.layout.to_d1_index(index.into_index());
         self.flat.set(index, value)
     }
 }

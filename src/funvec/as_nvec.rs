@@ -13,8 +13,8 @@ where
     }
 
     #[inline]
-    fn try_at<Idx: IntoIndex<N>>(&self, index: Idx) -> Option<T> {
-        Some(self.at(index))
+    fn is_index_valid<Idx: IntoIndex<N>>(&self, _: Idx) -> bool {
+        true
     }
 }
 

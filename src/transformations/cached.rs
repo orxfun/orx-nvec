@@ -52,8 +52,8 @@ where
         }
     }
 
-    fn try_at<Idx: IntoIndex<N>>(&self, index: Idx) -> Option<T> {
-        Some(self.at(index))
+    fn is_index_valid<Idx: IntoIndex<N>>(&self, index: Idx) -> bool {
+        self.inner.is_index_valid(index)
     }
 }
 

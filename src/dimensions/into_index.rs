@@ -1,6 +1,7 @@
 use super::{dim::*, LowerThan};
+use core::fmt::Debug;
 
-pub trait IntoIndex<D: Dim>: Sized + Copy {
+pub trait IntoIndex<D: Dim>: Sized + Copy + Debug {
     fn into_index(self) -> D::Idx;
 
     fn split(self) -> (usize, <D::PREVIOUS as Dim>::Idx)

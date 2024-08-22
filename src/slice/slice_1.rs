@@ -5,8 +5,8 @@ impl<T: Copy> NVec<D1, T> for &[T] {
         self[index.into_index()[0]]
     }
 
-    fn try_at<Idx: IntoIndex<D1>>(&self, index: Idx) -> Option<T> {
-        self.get(index.into_index()[0]).copied()
+    fn is_index_valid<Idx: IntoIndex<D1>>(&self, index: Idx) -> bool {
+        index.into_index()[0] < self.len()
     }
 }
 
@@ -15,8 +15,8 @@ impl<T: Copy> NVec<D1, T> for &mut [T] {
         self[index.into_index()[0]]
     }
 
-    fn try_at<Idx: IntoIndex<D1>>(&self, index: Idx) -> Option<T> {
-        self.get(index.into_index()[0]).copied()
+    fn is_index_valid<Idx: IntoIndex<D1>>(&self, index: Idx) -> bool {
+        index.into_index()[0] < self.len()
     }
 }
 

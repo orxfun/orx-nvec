@@ -26,20 +26,6 @@ where
         index
     }
 
-    fn try_to_d1_index<Idx: IntoIndex<D2>>(&self, index: Idx) -> Option<usize> {
-        let [i, j] = index.into_index();
-        let begin = match i {
-            0 => 0,
-            _ => self.row_end_indices.try_at(i - 1)?,
-        };
-        let end = self.row_end_indices.try_at(i)?;
-        let index = begin + j;
-        match index < end {
-            true => Some(index),
-            false => None,
-        }
-    }
-
     pub fn into_inner(self) -> (V, O) {
         (self.flat, self.row_end_indices)
     }
@@ -56,8 +42,9 @@ where
         self.flat.at(self.to_d1_index(index))
     }
 
-    fn try_at<Idx: IntoIndex<D2>>(&self, index: Idx) -> Option<T> {
-        self.flat.try_at(self.try_to_d1_index(index)?)
+    fn is_index_valid<Idx: IntoIndex<D2>>(&self, index: Idx) -> bool {
+        let index = self.to_d1_index(index.into_index());
+        self.flat.is_index_valid(index)
     }
 }
 
@@ -130,13 +117,9 @@ mod tests {
 
             for j in 0..len {
                 assert_eq!(jagged.at([i, j]), expected);
-                assert_eq!(jagged.try_at([i, j]), Some(expected));
                 expected += 1;
             }
-
-            assert_eq!(jagged.try_at([i, len]), None);
         }
-        assert_eq!(jagged.try_at([row_end_indices.len(), 0]), None);
     }
 
     #[test]

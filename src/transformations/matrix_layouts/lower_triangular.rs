@@ -10,15 +10,6 @@ impl MatrixLayout for LowerTriangular {
         assert!(i < n && j <= i, "{}", OUT_OF_BOUNDS);
         (i * i + i) / 2 + j
     }
-
-    fn try_d1_index(&self, ij: [usize; 2]) -> Option<usize> {
-        let [i, j] = ij;
-        let n = self.num_rows_and_columns;
-        match i < n && j <= i {
-            true => Some((i * i + i) / 2 + j),
-            false => None,
-        }
-    }
 }
 
 #[cfg(test)]

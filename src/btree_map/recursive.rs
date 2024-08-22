@@ -10,9 +10,11 @@ where
         self.get(&i).expect(OUT_OF_BOUNDS).at(index)
     }
 
-    fn try_at<Idx: IntoIndex<D2>>(&self, index: Idx) -> Option<T> {
+    fn is_index_valid<Idx: IntoIndex<D2>>(&self, index: Idx) -> bool {
         let (i, index) = index.split();
-        self.get(&i).and_then(|x| x.try_at(index))
+        self.get(&i)
+            .map(|v| v.is_index_valid(index))
+            .unwrap_or(false)
     }
 }
 
@@ -43,9 +45,11 @@ where
         self.get(&i).expect(OUT_OF_BOUNDS).at(index)
     }
 
-    fn try_at<Idx: IntoIndex<D2>>(&self, index: Idx) -> Option<T> {
+    fn is_index_valid<Idx: IntoIndex<D2>>(&self, index: Idx) -> bool {
         let (i, index) = index.split();
-        self.get(&i).and_then(|x| x.try_at(index))
+        self.get(&i)
+            .map(|v| v.is_index_valid(index))
+            .unwrap_or(false)
     }
 }
 
@@ -60,9 +64,11 @@ where
         self.get(&i).expect(OUT_OF_BOUNDS).at(index)
     }
 
-    fn try_at<Idx: IntoIndex<D2>>(&self, index: Idx) -> Option<T> {
+    fn is_index_valid<Idx: IntoIndex<D2>>(&self, index: Idx) -> bool {
         let (i, index) = index.split();
-        self.get(&i).and_then(|x| x.try_at(index))
+        self.get(&i)
+            .map(|v| v.is_index_valid(index))
+            .unwrap_or(false)
     }
 }
 
@@ -95,9 +101,11 @@ macro_rules! implement {
                 self.get(&i).expect(OUT_OF_BOUNDS).at(index)
             }
 
-            fn try_at<Idx: IntoIndex<$dim>>(&self, index: Idx) -> Option<T> {
+            fn is_index_valid<Idx: IntoIndex<$dim>>(&self, index: Idx) -> bool {
                 let (i, index) = index.split();
-                self.get(&i).and_then(|x| x.try_at(index))
+                self.get(&i)
+                    .map(|v| v.is_index_valid(index))
+                    .unwrap_or(false)
             }
         }
 
@@ -128,9 +136,11 @@ macro_rules! implement {
                 self.get(&i).expect(OUT_OF_BOUNDS).at(index)
             }
 
-            fn try_at<Idx: IntoIndex<$dim>>(&self, index: Idx) -> Option<T> {
+            fn is_index_valid<Idx: IntoIndex<$dim>>(&self, index: Idx) -> bool {
                 let (i, index) = index.split();
-                self.get(&i).and_then(|x| x.try_at(index))
+                self.get(&i)
+                    .map(|v| v.is_index_valid(index))
+                    .unwrap_or(false)
             }
         }
 
@@ -151,9 +161,11 @@ macro_rules! implement {
                 self.get(&i).expect(OUT_OF_BOUNDS).at(index)
             }
 
-            fn try_at<Idx: IntoIndex<$dim>>(&self, index: Idx) -> Option<T> {
+            fn is_index_valid<Idx: IntoIndex<$dim>>(&self, index: Idx) -> bool {
                 let (i, index) = index.split();
-                self.get(&i).and_then(|x| x.try_at(index))
+                self.get(&i)
+                    .map(|v| v.is_index_valid(index))
+                    .unwrap_or(false)
             }
         }
 
